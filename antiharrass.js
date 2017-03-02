@@ -7,15 +7,12 @@ var yourTokenSecret = "";
 var twitterAPI = require('node-twitter-api');
 var util = require('util');
 var fs = require('fs');
-
-//var mozzarellaScore = 0;
-
-
 var twitter = new twitterAPI({
     consumerKey: yourConsumerKey,
     consumerSecret: yourConsumerSecret});
 
-twitter.getStream("filter", {track:"u"}, yourAccessToken,yourTokenSecret,onData);
+var badWord = "cunt";
+twitter.getStream("filter", {track: badWord}, yourAccessToken,yourTokenSecret,onData);
 
 function onData(error, streamEvent){
 if (Object.keys(streamEvent).length === 0){
@@ -33,25 +30,37 @@ var name = streamEvent['user']['screen_name'];
 	//(this is used to create an offender object, and happens only once for each offender)
 		var tempOffender = {
 		name: '',
-		offensiveWord: '',
+		badWord: '',
 		offenseCount: 0
 	}
 
+	if (offendersList.length > -1)
 	offendersList.push(tempOffender); // add person to list of known offenders
+	console.log(offendersList.length);
+
 
 	// to check if an existing offender has more than one offense
-	var i;
-	offendersList[i].offenseCount++;
+	for(var i = 0; i < offendersList.length; i++){
 
-// if an offender has more than 5 offense, do something
-	if (offendersList[i].offenseCount > 0) {
 
-		console.log(name + "just said u again");
+		if (offendersList[i].hasOwnProperty(name) ){
+			
+			offendersList[i].offenseCount ++;
+		
+		// if an offender has more than 5 offense, do something
+		if (offendersList[i].offenseCount > 1) {
 
-	}
+
+		//console.log(name + " just said cunt again");
+
+		}//end do something
+
+		}//end offenseCount increment
+	
+	}//end for loop
 	
 
-}
+}//end onData function
 
 
 
@@ -76,14 +85,6 @@ if (offenders.hasOwnProperty(name))
 	offenders[name]++;
 	console.log(name + "just said u again");
 }
-}
-*/
-
-/*
-if (tweetText.indexOf('mozzarella') != -1)
-{mozzarellaScore ++;}
-console.log("mozzarella:", mozzarellaScore)
-
 }
 */
 
