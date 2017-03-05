@@ -11,6 +11,14 @@ var fs = require('fs');
 
 var offendersList = []; // this is an assosciate array - container for objects
 
+// every time a new offender is detected 
+//(this is used to create an offender object, and happens only once for each offender)
+var tempOffender = {
+		name: '',
+		badWord: '',
+		offenseCount: 0
+	};
+
 var twitter = new twitterAPI({
     consumerKey: yourConsumerKey,
     consumerSecret: yourConsumerSecret});
@@ -33,16 +41,6 @@ function onData(error, streamEvent){
 	console.log(streamEvent['user']['screen_name']);
 	console.log(streamEvent['text']);
 
-	
-	
-
-	// every time a new offender is detected 
-	//(this is used to create an offender object, and happens only once for each offender)
-	var tempOffender = {
-		name: '',
-		badWord: '',
-		offenseCount: 0
-	}
 
 	if (offendersList.length > -1) {
 		offendersList.push(tempOffender); // add person to list of known offenders
