@@ -15,7 +15,7 @@ var twitter = new twitterAPI({
     consumerKey: yourConsumerKey,
     consumerSecret: yourConsumerSecret});
 
-var badWord = "blahblahblahblahblah";
+var badWord = "cunt";
 twitter.getStream("filter", {track: badWord}, yourAccessToken,yourTokenSecret,onData);
 
 function onData(error, streamEvent){
@@ -27,10 +27,14 @@ function onData(error, streamEvent){
 	// console.log('streamEvent', streamEvent);
 	// console.log('stream length', streamEvent.length);
 
+	
 	var tweetText = streamEvent['text'];
 	var name = streamEvent['user']['screen_name'];
 	console.log(streamEvent['user']['screen_name']);
 	console.log(streamEvent['text']);
+
+	
+	
 
 	// every time a new offender is detected 
 	//(this is used to create an offender object, and happens only once for each offender)
@@ -48,18 +52,24 @@ function onData(error, streamEvent){
 	// to check if an existing offender has more than one offense
 	for(var i = 0; i < offendersList.length; i++){
 
-		if (offendersList[i].hasOwnProperty(name) ){
-			
+		//var thisOffender = offendersList[i].hasOwnProperty("name");
+
+
+		if (offendersList[i].hasOwnProperty("name") ){
+
 			offendersList[i].offenseCount ++;
 
-			// if an offender has more than 5 offense, do something
-			if (offendersList[i].offenseCount > 0) {
-			
-				console.log(name + " just said blah again");
+			console.log(offendersList[i].offenseCount);
 
-			}//end do something
+			// if an offender has more than 5 offense, do something
+		if (offendersList[i].offenseCount > 1) {
+
+
+		console.log(name + " just said cunt again");
+
+		}//end do something
 		
-		}//end offenseCount increment
+	}//end offenseCount increment
 	
 	}//end for loop
 	
