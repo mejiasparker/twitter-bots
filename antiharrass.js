@@ -9,15 +9,7 @@ var util = require('util');
 var fs = require('fs');
 
 
-var offendersList = []; // this is an assosciate array - container for objects
-
-// every time a new offender is detected 
-//(this is used to create an offender object, and happens only once for each offender)
-var tempOffender = {
-		name: '',
-		badWord: '',
-		offenseCount: 0
-	};
+var offendersList = {}; // this is an assosciative array - container for objects
 
 var twitter = new twitterAPI({
     consumerKey: yourConsumerKey,
@@ -32,44 +24,44 @@ function onData(error, streamEvent){
 		return;
 	}
 
+
 	// console.log('streamEvent', streamEvent);
 	// console.log('stream length', streamEvent.length);
 
 	
 	var tweetText = streamEvent['text'];
 	var name = streamEvent['user']['screen_name'];
-	console.log(streamEvent['user']['screen_name']);
-	console.log(streamEvent['text']);
+	var rawdate = streamEvent['created_at'];
+	var date = rawdate.substring(4,10);
+	console.log(name);
+	console.log(tweetText);
+	console.log(date);
 
+	if (offendersList[name]) {
+		offendersList[name].offenseCount++;
+		console.log('old offender ' + name +': '+ offendersList[name].offenseCount);
+		// increment the count
+	} else {
+		var newOffender = {
+			name: name,
+			date: date,
+			offenseCount: 1
+		};
+		console.log('new offender ' + name +': ' + newOffender.offenseCount);
 
-	if (offendersList.length > -1) {
-		offendersList.push(tempOffender); // add person to list of known offenders
-		//console.log(offendersList.length);
+		offendersList[name] = newOffender; // add person to list of known offenders		
 	}
 
-	// to check if an existing offender has more than one offense
-	for(var i = 0; i < offendersList.length; i++){
-
-		//var thisOffender = offendersList[i].hasOwnProperty("name");
-
-
-		if (offendersList[i].hasOwnProperty("name") ){
-
-			offendersList[i].offenseCount ++;
-
-			console.log(offendersList[i].offenseCount);
-
-			// if an offender has more than 5 offense, do something
-		if (offendersList[i].offenseCount > 1) {
-
-
-		console.log(name + " just said cunt again");
-
-		}//end do something
-		
-	}//end offenseCount increment
-	
-	}//end for loop
-	
+	if (offendersList[name].offenseCount > 2) {
+		twitter.statuses(
+               'update',
+               {'status': name + ' said "cunt" '+offendersList[name].offenseCount+' times since ' + date + '. Grammabot wonders why you use that word so much!'},
+               yourAccessToken,
+               yourTokenSecret,
+               function (err, data, resp) { console.log(err); }
+            );
+		delete offendersList[name];
+	}
 
 }//end onData function
+
