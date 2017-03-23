@@ -15,6 +15,13 @@ var twitter = new twitterAPI({
     consumerKey: yourConsumerKey,
     consumerSecret: yourConsumerSecret});
 
+var quips = ['. Grammabot is disappointed!', 
+	     '. Grammabot is confused and dismayed.',
+	     '. Grammabot wonders why you use that word so much!', 
+	     '. Grammabot needs to speak with your mother.', 
+	     '. Things sure have changed since Grammabots day.'];
+var randomQuip = quips[Math.floor(Math.random() * quips.length)];
+
 var badWord = "cunt";
 twitter.getStream("filter", {track: badWord}, yourAccessToken,yourTokenSecret,onData);
 
@@ -55,7 +62,7 @@ function onData(error, streamEvent){
 	if (offendersList[name].offenseCount > 2) {
 		twitter.statuses(
                'update',
-               {'status': name + ' said "cunt" '+offendersList[name].offenseCount+' times since ' + date + '. Grammabot wonders why you use that word so much!'},
+               {'status': name + ' said "cunt" '+offendersList[name].offenseCount+' times since ' + date + randomQuip},
                yourAccessToken,
                yourTokenSecret,
                function (err, data, resp) { console.log(err); }
