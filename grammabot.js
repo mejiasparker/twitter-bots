@@ -32,7 +32,7 @@ var quips10 =[
 ". Gramma Bot will die soon and this is the last thing she'll remember about you."];
 	
 
-var badWord = "cunt";
+var badWord = "blah";
 twitter.getStream('filter', {track: badWord}, yourAccessToken,yourTokenSecret,onData);
 
 function onData(error, streamEvent){
@@ -89,7 +89,7 @@ function onData(error, streamEvent){
 
 		twitter.statuses(
                'update',
-               {'status': '@'+name + ' said "cunt" '+offendersList[name].offenseCount+' times since ' + date + randomQuip3},
+               {'status': '@'+name + ' said "blah" '+offendersList[name].offenseCount+' times since ' + date + randomQuip3},
                yourAccessToken,
                yourTokenSecret,
                function (err, data, resp) { console.log(err); }
@@ -108,7 +108,7 @@ function onData(error, streamEvent){
 
 		twitter.statuses(
                'update',
-               {'status': '@'+name + ' said "cunt" '+offendersList[name].offenseCount+' times since ' + date + randomQuip5},
+               {'status': '@'+name + ' said "blah" '+offendersList[name].offenseCount+' times since ' + date + randomQuip5},
                yourAccessToken,
                yourTokenSecret,
                function (err, data, resp) { console.log(err); }
@@ -127,7 +127,7 @@ function onData(error, streamEvent){
 
 		twitter.statuses(
                'update',
-               {'status': '@'+name + ' said "cunt" '+offendersList[name].offenseCount+' times since ' + date + randomQuip10},
+               {'status': '@'+name + ' said "blah" '+offendersList[name].offenseCount+' times since ' + date + randomQuip10},
                yourAccessToken,
                yourTokenSecret,
                function (err, data, resp) { console.log(err); }
